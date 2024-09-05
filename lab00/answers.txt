@@ -1,0 +1,9 @@
+1. ls -lah
+2. mv [source] [destination]
+3. chmod (there are many kinds of usage)
+4. pwd
+5. ping -c 4 hostname_or_ip_address
+6. grep -f "keyword" /path/to/directory
+7. ps aux  or  top
+8. kill -KILL [PID]
+9. diff [file1] [file2]

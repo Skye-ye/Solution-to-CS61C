@@ -1,0 +1,9 @@
+1. set args [arg1] [arg2] [arg3]...
+2. break (or simply b) [function_name] (break main)/ [filename:linenumber] (break main.c:50)/ [*address] (break *0x401920)
+3. next
+4. step
+5. continue
+6. print [variable_name] (print 1 + 2 is also valid)
+7. display [variable_name]
+8. info locals
+9. q

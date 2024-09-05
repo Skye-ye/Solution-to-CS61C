@@ -1,0 +1,6 @@
+1. At the beginning of mapLoop, you need to load the content at address s0 into t0 instead of s0 itself
+2. The offset calculation is wrong. You need to multiple t0 by 4 and add it to t1
+3. Did not save temperary registers on the stack before calling func
+4. Wrong instruction to load the content in memory. Should use lw instead of la
+5. s1 itself is the address of func, no need to load content at address s1
+6. Forget to ret at the end of map function
