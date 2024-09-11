@@ -1,8 +1,7 @@
-#include <stdio.h>
-
-#include "../src/matrix.h"
-#include "CUnit/Basic.h"
 #include "CUnit/CUnit.h"
+#include "CUnit/Basic.h"
+#include "../src/matrix.h"
+#include <stdio.h>
 
 /* Test Suite setup and cleanup functions: */
 int init_suite(void) { return 0; }
@@ -92,7 +91,7 @@ void alloc_ref_success_test(void) {
 
 void dealloc_null_test(void) {
   matrix *mat = NULL;
-  deallocate_matrix(mat);  // Test the null case doesn't crash
+  deallocate_matrix(mat); // Test the null case doesn't crash
 }
 
 void add_test(void) {
@@ -161,7 +160,7 @@ void neg_test(void) {
   }
   deallocate_matrix(result);
   deallocate_matrix(mat);
-}
+} 
 
 void abs_test(void) {
   matrix *result = NULL;
@@ -182,6 +181,24 @@ void abs_test(void) {
       CU_ASSERT_EQUAL(get(result, i, j), i * 2 + j);
     }
   }
+  deallocate_matrix(result);
+  deallocate_matrix(mat);
+}
+
+void abs_test2(void) {
+  matrix *result = NULL;
+  matrix *mat = NULL;
+  CU_ASSERT_EQUAL(allocate_matrix(&result, 2, 2), 0);
+  CU_ASSERT_EQUAL(allocate_matrix(&mat, 2, 2), 0);
+  set(mat, 0, 0, 10);
+  set(mat, 0, 1, -5.5);
+  set(mat, 1, 0, -111.111);
+  set(mat, 1, 1, 0);
+  abs_matrix(result, mat);
+  CU_ASSERT_EQUAL(get(result, 0, 0), 10);
+  CU_ASSERT_EQUAL(get(result, 0, 1), 5.5);
+  CU_ASSERT_EQUAL(get(result, 1, 0), 111.111);
+  CU_ASSERT_EQUAL(get(result, 1, 1), 0);
   deallocate_matrix(result);
   deallocate_matrix(mat);
 }
@@ -271,13 +288,14 @@ void pow_test(void) {
 
 /************* Test Runner Code goes here **************/
 
-int main(void) {
-  Py_Initialize();  // Need to call this so that Python.h functions won't
-                    // segfault
+int main (void)
+{
+  Py_Initialize(); // Need to call this so that Python.h functions won't segfault
   CU_pSuite pSuite = NULL;
 
   /* initialize the CUnit test registry */
-  if (CU_initialize_registry() != CUE_SUCCESS) return CU_get_error();
+  if (CU_initialize_registry() != CUE_SUCCESS)
+    return CU_get_error();
 
   /* add a suite to the registry */
   pSuite = CU_add_suite("mat_test_suite", init_suite, clean_suite);
@@ -286,27 +304,27 @@ int main(void) {
     return CU_get_error();
   }
 
-  /* add the tests to the suite */
-  if ((CU_add_test(pSuite, "add_test", add_test) == NULL) ||
-      (CU_add_test(pSuite, "sub_test", sub_test) == NULL) ||
-      (CU_add_test(pSuite, "neg_test", neg_test) == NULL) ||
-      (CU_add_test(pSuite, "mul_square_test", mul_square_test) == NULL) ||
-      (CU_add_test(pSuite, "mul_non_square_test", mul_non_square_test) ==
-       NULL) ||
-      (CU_add_test(pSuite, "abs_test", abs_test) == NULL) ||
-      (CU_add_test(pSuite, "pow_test", pow_test) == NULL) ||
-      (CU_add_test(pSuite, "alloc_fail_test", alloc_fail_test) == NULL) ||
-      (CU_add_test(pSuite, "alloc_success_test", alloc_success_test) == NULL) ||
-      (CU_add_test(pSuite, "alloc_ref_fail_test", alloc_ref_fail_test) ==
-       NULL) ||
-      (CU_add_test(pSuite, "alloc_ref_success_test", alloc_ref_success_test) ==
-       NULL) ||
-      (CU_add_test(pSuite, "dealloc_null_test", dealloc_null_test) == NULL) ||
-      (CU_add_test(pSuite, "get_test", get_test) == NULL) ||
-      (CU_add_test(pSuite, "set_test", set_test) == NULL)) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
+   /* add the tests to the suite */
+   if ((CU_add_test(pSuite, "add_test", add_test) == NULL) ||
+        (CU_add_test(pSuite, "sub_test", sub_test) == NULL) ||
+        (CU_add_test(pSuite, "neg_test", neg_test) == NULL) ||
+        (CU_add_test(pSuite, "mul_square_test", mul_square_test) == NULL) ||
+        (CU_add_test(pSuite, "mul_non_square_test", mul_non_square_test) == NULL) ||
+        (CU_add_test(pSuite, "abs_test", abs_test) == NULL) ||
+        (CU_add_test(pSuite, "abs_test2", abs_test2) == NULL) ||
+        (CU_add_test(pSuite, "pow_test", pow_test) == NULL) ||
+        (CU_add_test(pSuite, "alloc_fail_test", alloc_fail_test) == NULL) ||
+        (CU_add_test(pSuite, "alloc_success_test", alloc_success_test) == NULL) ||
+        (CU_add_test(pSuite, "alloc_ref_fail_test", alloc_ref_fail_test) == NULL) ||
+        (CU_add_test(pSuite, "alloc_ref_success_test", alloc_ref_success_test) == NULL) ||
+        (CU_add_test(pSuite, "dealloc_null_test", dealloc_null_test) == NULL) ||
+        (CU_add_test(pSuite, "get_test", get_test) == NULL) ||
+        (CU_add_test(pSuite, "set_test", set_test) == NULL)
+     )
+   {
+      CU_cleanup_registry();
+      return CU_get_error();
+   }
 
   // Run all tests using the basic interface
   // CU_basic_set_mode(CU_BRM_NORMAL);
